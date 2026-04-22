@@ -1,40 +1,32 @@
 #include "../include/Employee.hpp"
 #include <iostream>   
-#include <sstream>    
+#include <sstream>   
 #include <iomanip>    
 #include <algorithm>  
-#include <string>      
-
-// CONSTRUCTOR: Default
+#include <string>     
 
 Employee::Employee()
-    : id(""), name(""), age(0), gender(""), position(""), salary(0.0), phone(""), email("")
+    : id(""), name(""), age(0), gender(""),
+      position(""), salary(0.0), phone(""), email("")
 {
-
 }
 
-// CONSTRUCTOR: Parameterized
-
-Employee::Employee(
-                   const std::string& id,
+Employee::Employee(const std::string& id,
                    const std::string& name,
                    int age,
                    const std::string& gender,
                    const std::string& position,
                    double salary,
                    const std::string& phone,
-                   const std::string& email
-                )
-
+                   const std::string& email)
     : id(id), name(name), age(age), gender(gender), position(position), salary(salary), phone(phone), email(email)
 {
-
 }
 
 std::vector<std::string> splitCSV(const std::string& line) {
-    std::vector<std::string> fields;  
-    std::stringstream ss(line);       
-    std::string token;                
+    std::vector<std::string> fields;
+    std::stringstream ss(line);
+    std::string token;
 
     while (std::getline(ss, token, ',')) {
         fields.push_back(token);
@@ -44,7 +36,7 @@ std::vector<std::string> splitCSV(const std::string& line) {
 }
 
 std::string Employee::toCSV() const {
-    std::ostringstream oss;  
+    std::ostringstream oss;
 
     oss << id       << ","
         << name     << ","
@@ -55,7 +47,7 @@ std::string Employee::toCSV() const {
         << phone    << ","
         << email;
 
-    return oss.str(); 
+    return oss.str();
 }
 
 Employee Employee::fromCSV(const std::string& line) {
@@ -64,47 +56,31 @@ Employee Employee::fromCSV(const std::string& line) {
     Employee emp;
 
     if (fields.size() < 8) {
-        return emp;
+        return emp;  
     }
 
     emp.id       = fields[0];
     emp.name     = fields[1];
-    emp.age      = std::stoi(fields[2]);    
+    emp.age      = std::stoi(fields[2]);   
     emp.gender   = fields[3];
     emp.position = fields[4];
-    emp.salary   = std::stod(fields[5]);    
+    emp.salary   = std::stod(fields[5]);   
     emp.phone    = fields[6];
     emp.email    = fields[7];
 
     return emp;
 }
 
-void Employee::displayRow() const {
-    std::cout << "| "
-              << std::left << std::setw(8)  << id        << " | "
-              << std::left << std::setw(22) << name      << " | "
-              << std::left << std::setw(4)  << age       << " | "
-              << std::left << std::setw(7)  << gender    << " | "
-              << std::left << std::setw(20) << position  << " | "
-              << std::fixed << std::setprecision(2)
-              << std::left << std::setw(12) << salary    << " | "
-              << std::left << std::setw(14) << phone     << " | "
-              << std::left << std::setw(28) << email     << " |"
-              << "\n";
-}
-
 void Employee::displayDetails() const {
     std::cout << "\n====================================\n";
     std::cout << "         Employee Details\n";
     std::cout << "====================================\n";
-    std::cout << std::left;
     std::cout << "  ID       : " << id       << "\n";
     std::cout << "  Name     : " << name     << "\n";
     std::cout << "  Age      : " << age      << "\n";
     std::cout << "  Gender   : " << gender   << "\n";
     std::cout << "  Position : " << position << "\n";
-    std::cout << "  Salary   : "
-              << std::fixed << std::setprecision(2) << salary << "\n";
+    std::cout << "  Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
     std::cout << "  Phone    : " << phone    << "\n";
     std::cout << "  Email    : " << email    << "\n";
     std::cout << "====================================\n";
@@ -124,30 +100,4 @@ bool Employee::nameContains(const std::string& searchTerm) const {
                    lowerTerm.begin(), ::tolower);
 
     return lowerName.find(lowerTerm) != std::string::npos;
-}
-
-void printTableHeader() {
-    std::cout << "+-----------+------------------------+------+---------+"
-              << "----------------------+---------------+-----------------+"
-              << "------------------------------+\n";
-
-    std::cout << "| "
-              << std::left << std::setw(8)  << "ID"       << " | "
-              << std::left << std::setw(22) << "Name"     << " | "
-              << std::left << std::setw(4)  << "Age"      << " | "
-              << std::left << std::setw(7)  << "Gender"   << " | "
-              << std::left << std::setw(20) << "Position" << " | "
-              << std::left << std::setw(12) << "Salary"   << " | "
-              << std::left << std::setw(14) << "Phone"    << " | "
-              << std::left << std::setw(28) << "Email"    << " |\n";
-
-    std::cout << "+-----------+------------------------+------+---------+"
-              << "----------------------+---------------+-----------------+"
-              << "------------------------------+\n";
-}
-
-void printTableFooter() {
-    std::cout << "+-----------+------------------------+------+---------+"
-              << "----------------------+---------------+-----------------+"
-              << "------------------------------+\n";
 }
