@@ -1,0 +1,4 @@
+ID,Name,Age,Gender,Position,Salary,Phone,Email,Username,Password,Role
+EMP001,Alice Johnson,30,Female,Software Engineer,75000.00,012-345-6789,alice@company.com,alice,alice123,employee
+EMP002,Bob Smith,45,Male,Project Manager,95000.00,012-987-6543,bob@company.com,bob,bob123,employee
+EMP003,Admin User,35,Male,System Administrator,100000.00,012-000-0001,admin@company.com,admin,admin123,admin

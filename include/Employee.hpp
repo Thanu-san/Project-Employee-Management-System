@@ -1,17 +1,18 @@
 // include/Employee.hpp
 // -------------------------------------------------------
-// Defines the Employee class: stores data for one employeeand provides methods to display and convert to/from CSV.
+// Defines the Employee class: stores BOTH employee data AND login credentials for each person in the system.
 // -------------------------------------------------------
 
-#pragma once 
-#include <string>   
-#include <vector>   
+#pragma once  
+
+#include <string>  
+#include <vector>  
 
 // Employee Class
 
 class Employee {
 public:
-    // ---- Data Members ----
+    // ---- Employee Data ----
     std::string id;        
     std::string name;      
     int         age;       
@@ -20,6 +21,11 @@ public:
     double      salary;    
     std::string phone;     
     std::string email;     
+
+    // ---- Login Credential Fields ----
+    std::string username;  
+    std::string password;  
+    std::string role;      
 
     // ---- Constructors ----
 
@@ -32,10 +38,17 @@ public:
              const std::string& position,
              double salary,
              const std::string& phone,
-             const std::string& email
-            );
+             const std::string& email,
+             const std::string& username,
+             const std::string& password,
+             const std::string& role);
 
-    // ---- Display Method ----
+    // ---- Login / Role Methods ----
+
+    bool isAdmin() const;
+
+    bool matches(const std::string& inputUsername,
+                 const std::string& inputPassword) const;
 
     void displayDetails() const;
 
