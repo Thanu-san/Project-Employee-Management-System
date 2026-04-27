@@ -33,20 +33,20 @@ void Manager::pressEnterToContinue() {
 
 void Manager::printHeader(const std::string& subtitle) {
     std::cout << "\n";
-    std::cout << "        \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n";
-    std::cout << "        \u2551   Employee Management System      \u2551\n";
-    std::cout << "        \u2551   " << std::left << std::setw(33) << subtitle << "\u2551\n";
-    std::cout << "        \u2560\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2563\n";
+    std::cout << "        +-----------------------------------+\n";
+    std::cout << "        |   Employee Management System      |\n";
+    std::cout << "        |  " << std::left << std::setw(33) << subtitle << "|\n";
+    std::cout << "        +-----------------------------------+\n";
 }
 
 void Manager::printMenuItem(const std::string& num,
                             const std::string& label) {
     std::string item = num + ". " + label;
-    std::cout << "        \u2551   " << std::left << std::setw(33) << item << "\u2551\n";
+    std::cout << "        |   " << std::left << std::setw(33) << item << "|\n";
 }
 
 void Manager::printFooter() {
-    std::cout << "        \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n";
+    std::cout << "        +-----------------------------------+\n";
 }
 
 void Manager::loadEmployees() {
@@ -154,10 +154,10 @@ void Manager::showLoginScreen() {
         clearScreen();
 
         std::cout << "\n";
-        std::cout << "        \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n";
-        std::cout << "        \u2551   Employee Management System      \u2551\n";
-        std::cout << "        \u2551        Welcome! Please Login      \u2551\n";
-        std::cout << "        \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n";
+        std::cout << "+-----------------------------------+\n";
+        std::cout << "|   Employee Management System      |\n";
+        std::cout << "|        Welcome! Please Login      |\n";
+        std::cout << "+-----------------------------------+\n";        
         std::cout << "\n";
         std::cout << "        Username : ";
         std::cin  >> username;
