@@ -18,6 +18,10 @@ private:
 
     std::string generateNextId();
 
+    std::string getInputSameLine();
+
+    std::string getInputOptional();
+
     bool idExists(const std::string& id);
 
     bool usernameExists(const std::string& username);

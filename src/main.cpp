@@ -1,10 +1,14 @@
 #include "../include/Manager.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <locale>
 
 int main() {
     try {
-        std::cout << "Starting program..." << std::endl;
+        std::locale::global(std::locale("C"));
+    } catch (...) {}
+
+    try {
 
         Manager manager("data/employees.csv");
         std::cout << "Manager created successfully!" << std::endl;
