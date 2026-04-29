@@ -10,8 +10,6 @@
 #include <clocale>   
 #include <conio.h>
 
-#include <tabulate/table.hpp>
-using namespace tabulate;
 
 Manager::Manager(const std::string& employeeFile)
     : employeeFile(employeeFile), currentUser(nullptr)
@@ -122,55 +120,105 @@ void Manager::displayTable(const std::vector<Employee>& list) {
         return;
     }
 
-    setlocale(LC_ALL, "C");
+    const int w1  = 8;   
+    const int w2  = 20;  
+    const int w3  = 4;   
+    const int w4  = 7;   
+    const int w5  = 20;  
+    const int w6  = 11;  
+    const int w7  = 14;  
+    const int w8  = 25;  
+    const int w9  = 10;  
+    const int w10 = 8;   
 
-    Table table;
+    auto printSep = [&](char left, char mid, char fill, char right) {
+        std::cout << "        " << left;
+        std::cout << std::string(w1  + 2, fill) << mid;
+        std::cout << std::string(w2  + 2, fill) << mid;
+        std::cout << std::string(w3  + 2, fill) << mid;
+        std::cout << std::string(w4  + 2, fill) << mid;
+        std::cout << std::string(w5  + 2, fill) << mid;
+        std::cout << std::string(w6  + 2, fill) << mid;
+        std::cout << std::string(w7  + 2, fill) << mid;
+        std::cout << std::string(w8  + 2, fill) << mid;
+        std::cout << std::string(w9  + 2, fill) << mid;
+        std::cout << std::string(w10 + 2, fill) << right << "\n";
+    };
 
-    table.add_row({"ID", "Name", "Age", "Gender",
-                   "Position", "Salary", "Phone", "Email",
-                   "Username", "Role"});
+    // Lambda to print one row
+    auto printRow = [&](
+        const std::string& id,
+        const std::string& name,
+        const std::string& age,
+        const std::string& gender,
+        const std::string& position,
+        const std::string& salary,
+        const std::string& phone,
+        const std::string& email,
+        const std::string& username,
+        const std::string& role)
+    {
+        std::cout << "        |"
+                  << " " << std::left << std::setw(w1)  << id       << " |"
+                  << " " << std::left << std::setw(w2)  << name     << " |"
+                  << " " << std::left << std::setw(w3)  << age      << " |"
+                  << " " << std::left << std::setw(w4)  << gender   << " |"
+                  << " " << std::left << std::setw(w5)  << position << " |"
+                  << " " << std::left << std::setw(w6)  << salary   << " |"
+                  << " " << std::left << std::setw(w7)  << phone    << " |"
+                  << " " << std::left << std::setw(w8)  << email    << " |"
+                  << " " << std::left << std::setw(w9)  << username << " |"
+                  << " " << std::left << std::setw(w10) << role     << " |\n";
+    };
+
+    std::cout << "\n";
+
+    printSep('+', '+', '-', '+');
+
+    printRow("ID", "Name", "Age", "Gender", "Position",
+             "Salary", "Phone", "Email", "Username", "Role");
+
+    printSep('+', '+', '=', '+');
 
     for (const Employee& emp : list) {
-        table.add_row({
+        std::ostringstream salaryStream;
+        salaryStream << std::fixed << std::setprecision(2) << emp.salary;
+
+        printRow(
             emp.id,
             emp.name,
             std::to_string(emp.age),
             emp.gender,
             emp.position,
-            std::to_string(emp.salary),
+            salaryStream.str(),
             emp.phone,
             emp.email,
             emp.username,
             emp.role
-        });
+        );
+
+        printSep('+', '+', '-', '+');
     }
-
-    table[0].format()
-        .font_style({FontStyle::bold})
-        .font_color(Color::cyan);
-
-    std::cout << "\n" << table << "\n";
 }
-
-std::string Manager::getInputSameLine() {
+    std::string Manager::getInputSameLine() {
     std::string input;
     char ch;
     while (true) {
-        ch = _getch();  // read one character without Enter
+        ch = _getch();  
         if (ch == '\r' || ch == '\n') {
             if (!input.empty()) {
                 std::cout << "\n";
-                break;  // only accept Enter if something was typed
+                break;  
             }
-            // if empty, do nothing — stay on same line
-        } else if (ch == '\b') {  // backspace
+            
+        } else if (ch == '\b') {  
             if (!input.empty()) {
                 input.pop_back();
-                std::cout << "\b \b";  // erase character
+                std::cout << "\b \b";  
             }
         } else {
             input += ch;
-            std::cout << ch;  // print character
+            std::cout << ch;  
         }
     }
     return input;
@@ -184,7 +232,7 @@ std::string Manager::getInputOptional() {
         ch = _getch();
         if (ch == '\r' || ch == '\n') {
             std::cout << "\n";
-            break;  // accepts empty input
+            break;  
         } else if (ch == '\b') {
             if (!input.empty()) {
                 input.pop_back();
