@@ -100,20 +100,20 @@ bool Employee::matches(const std::string& inputUsername,
 }
 
 void Employee::displayDetails() const {
-    std::cout << "\n====================================\n";
-    std::cout << "         Employee Details\n";
-    std::cout << "====================================\n";
-    std::cout << "  ID       : " << id       << "\n";
-    std::cout << "  Name     : " << name     << "\n";
-    std::cout << "  Age      : " << age      << "\n";
-    std::cout << "  Gender   : " << gender   << "\n";
-    std::cout << "  Position : " << position << "\n";
-    std::cout << "  Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
-    std::cout << "  Phone    : " << phone    << "\n";
-    std::cout << "  Email    : " << email    << "\n";
-    std::cout << "  Username : " << username << "\n";
-    std::cout << "  Role     : " << role     << "\n";
-    std::cout << "====================================\n";
+    std::cout << "\n      ====================================\n";
+    std::cout << "               Employee Details\n";
+    std::cout << "      ====================================\n";
+    std::cout << "        ID       : " << id       << "\n";
+    std::cout << "        Name     : " << name     << "\n";
+    std::cout << "        Age      : " << age      << "\n";
+    std::cout << "        Gender   : " << gender   << "\n";
+    std::cout << "        Position : " << position << "\n";
+    std::cout << "        Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
+    std::cout << "        Phone    : " << phone    << "\n";
+    std::cout << "        Email    : " << email    << "\n";
+    std::cout << "        Username : " << username << "\n";
+    std::cout << "        Role     : " << role     << "\n";
+    std::cout << "      ====================================\n";
 }
 
 bool Employee::hasId(const std::string& searchId) const {

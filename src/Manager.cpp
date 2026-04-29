@@ -289,12 +289,12 @@ void Manager::showLoginScreen() {
 
 
         if (login(username, password)) {
-            std::cout << "\n Login successful! Welcome, "
+            std::cout << "\n        Login successful! Welcome, "
                       << getCurrentUsername() << "!\n";
             pressEnterToContinue();
             return;
         } else {
-            std::cout << "\n Invalid username or password! Try again.\n";
+            std::cout << "\n        Invalid username or password! Try again.\n";
             pressEnterToContinue();
         }
     }
@@ -338,14 +338,10 @@ void Manager::addEmployee() {
     int age;
     double salary;
 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
     std::cout << "\n Enter Employee Details:\n\n";
 
-    std::string nameStr;
     std::cout << "        Name      : " << std::flush;
-    nameStr = getInputSameLine();
-    name = std::stoi(nameStr);
+    name = getInputSameLine();
 
     std::string ageStr;
     std::cout << "        Age      : " << std::flush;
@@ -372,7 +368,8 @@ void Manager::addEmployee() {
     std::cout << "\n Enter Login Credentials:\n\n";
 
     while (true) {
-        std::cout << " Username : "; std::getline(std::cin, username);
+        std::cout << "        Username : " << std::flush;
+        username = getInputSameLine();
         if (usernameExists(username)) {
             std::cout << " Username already taken! Try another.\n";
         } else {
@@ -380,10 +377,11 @@ void Manager::addEmployee() {
         }
     }
 
-    std::cout << " Password : "; std::getline(std::cin, password);
+    std::cout << "        Password : " << std::flush;
+    password = getInputSameLine();
 
-    std::cout << " Role (admin / employee) : ";
-    std::getline(std::cin, role);
+    std::cout << "        Role (admin / employee) : " << std::flush;
+    role = getInputSameLine();
     if (role != "admin" && role != "employee") {
         std::cout << " Invalid role! Defaulting to 'employee'.\n";
         role = "employee";

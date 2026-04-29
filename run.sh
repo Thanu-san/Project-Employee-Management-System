@@ -1,38 +1,30 @@
-#!/bin/bash
 # -------------------------------------------------------
 # run.sh
-# Easy build and run script for Employee Management System
-# 
-# HOW TO USE:
-#   First time  : bash run.sh
-#   After that  : bash run.sh
+# Clean build and run script for Employee Management System
 # -------------------------------------------------------
 
 echo "========================================"
 echo "   Employee Management System"
 echo "========================================"
+echo ""
+echo "  Cleaning old build..."
 
-# Check if build folder exists
-if [ ! -d "build" ]; then
-    echo ""
-    echo "  Build folder not found! Setting up..."
-    mkdir build
-    cd build
-    cmake .. -G "MinGW Makefiles"
-    cmake --build .
-    cd ..
-else
-    echo ""
-    echo "  Building latest changes..."
-    cd build
-    cmake --build .
-    cd ..
-fi
+rm -rf build
+mkdir build
+
+echo "  Setting up CMake..."
+cd build
+cmake .. -G "MinGW Makefiles" -Wno-dev
+
+echo ""
+echo "  Building..."
+cmake --build .
+
+cd ..
 
 echo ""
 echo "  Starting program..."
 echo "========================================"
 echo ""
 
-# Run the program
 build/EmployeeManagementSystem.exe
