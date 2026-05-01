@@ -22,6 +22,8 @@ private:
 
     std::string getInputOptional();
 
+    std::string getPasswordInput();
+
     bool idExists(const std::string& id);
 
     bool usernameExists(const std::string& username);

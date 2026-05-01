@@ -9,7 +9,13 @@
 #include <vector>    
 #include <clocale>   
 #include <conio.h>
-
+#define RESET   "\033[0m"
+#define CYAN    "\033[36m"
+#define GREEN   "\033[32m"
+#define RED     "\033[31m"
+#define YELLOW  "\033[33m"
+#define BOLD    "\033[1m"
+#define WHITE   "\033[37m"
 
 Manager::Manager(const std::string& employeeFile)
     : employeeFile(employeeFile), currentUser(nullptr)
@@ -33,21 +39,23 @@ void Manager::pressEnterToContinue() {
 
 void Manager::printHeader(const std::string& subtitle) {
     std::cout << "\n";
-    std::cout << "        +-----------------------------------+\n";
-    std::cout << "        |                                   |\n";
-    std::cout << "        |  " << std::left << std::setw(33) << subtitle << "|\n";
-    std::cout << "        |                                   |\n";
-    std::cout << "        +-----------------------------------+\n";
+    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+    std::cout << CYAN << "        | " << RESET << "                                   " << CYAN << "|\n" << RESET;
+    std::cout << CYAN << "        |   " << RESET << WHITE << std::left << std::setw(33) << subtitle << RESET << CYAN << "|\n" << RESET;
+    std::cout << CYAN << "        | " << RESET << "                                   " << CYAN << "|\n" << RESET;
+    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
 }
 
 void Manager::printMenuItem(const std::string& num,
                             const std::string& label) {
     std::string item = num + ". " + label;
-    std::cout << "        |  " << std::left << std::setw(33) << item << "|\n";
+    std::cout << CYAN << "        |   " << RESET 
+              << WHITE << std::left << std::setw(33) << item << RESET 
+              << CYAN << "|\n" << RESET;
 }
 
 void Manager::printFooter() {
-    std::cout << "        +-----------------------------------+\n";
+    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
 }
 
 void Manager::loadEmployees() {
@@ -176,7 +184,7 @@ void Manager::displayTable(const std::vector<Employee>& list) {
     printSep('+', '+', '-', '+');
 
     printRow("ID", "Name", "Age", "Gender", "Position",
-             "Salary", "Phone", "Email", "Username", "Role");
+         "Salary", "Phone", "Email", "Username", "Role");
 
     printSep('+', '+', '=', '+');
 
@@ -246,6 +254,29 @@ std::string Manager::getInputOptional() {
     return input;
 }
 
+std::string Manager::getPasswordInput() {
+    std::string input;
+    char ch;
+    while (true) {
+        ch = _getch();
+        if (ch == '\r' || ch == '\n') {
+            if (!input.empty()) {
+                std::cout << "\n";
+                break;
+            }
+        } else if (ch == '\b') {
+            if (!input.empty()) {
+                input.pop_back();
+                std::cout << "\b \b" << std::flush;
+            }
+        } else {
+            input += ch;
+            std::cout << "*" << std::flush;  
+        }
+    }
+    return input;
+}
+
 void Manager::showLoginScreen() {
     std::string username, password;
 
@@ -253,18 +284,19 @@ void Manager::showLoginScreen() {
         clearScreen();
 
         std::cout << "\n";
-        std::cout << "        +-----------------------------------+\n";
-        std::cout << "        |                                   |\n";
-        std::cout << "        |     Employee Management System    |\n";
-        std::cout << "        |                                   |\n";
-        std::cout << "        +-----------------------------------+\n";
-        std::cout << "        |   1. Login                        |\n";
-        std::cout << "        |   0. Exit                         |\n";
-        std::cout << "        +-----------------------------------+\n";
+        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+        std::cout << CYAN << "        |                                    |\n" << RESET;
+        std::cout << CYAN << "        |      Employee Management System    |\n" << RESET;
+        std::cout << CYAN << "        |                                    |\n" << RESET;
+        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+        std::cout << CYAN << "        |  [1]. Login                        |\n" << RESET;
+        std::cout << CYAN << "        |  [0]. Exit                         |\n" << RESET;
+        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << std::flush;
+        std::cout << "\n        Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
+        std::cout << RESET;
         int choice;
         try {
             choice = std::stoi(choiceStr);
@@ -279,22 +311,24 @@ void Manager::showLoginScreen() {
     }
 
         
-        std::cout << "\n        Username : " << std::flush;
+        std::cout << "\n        Username : "<< GREEN << std::flush;
         username = getInputSameLine();
+        std::cout << RESET;
         
-        std::cout << "\n        Password : " << std::flush;
-        password = getInputSameLine();
+        std::cout << "\n        Password : "  << GREEN << std::flush;
+        password = getPasswordInput();
+        std::cout << RESET;
 
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 
         if (login(username, password)) {
-            std::cout << "\n        Login successful! Welcome, "
-                      << getCurrentUsername() << "!\n";
+            std::cout << GREEN << "\n        Login successful! Welcome, "
+                        << getCurrentUsername() << "!\n" << RESET;
             pressEnterToContinue();
             return;
         } else {
-            std::cout << "\n        Invalid username or password! Try again.\n";
+            std::cout << RED << "\n        Invalid username or password!\n" << RESET;
             pressEnterToContinue();
         }
     }
@@ -338,52 +372,61 @@ void Manager::addEmployee() {
     int age;
     double salary;
 
-    std::cout << "\n Enter Employee Details:\n\n";
+    std::cout << "\n        Enter Employee Details:\n\n";
 
-    std::cout << "        Name      : " << std::flush;
+    std::cout << "        Name      : "  << GREEN << std::flush;
     name = getInputSameLine();
+    std::cout << RESET;
 
     std::string ageStr;
-    std::cout << "        Age      : " << std::flush;
+    std::cout << "        Age      : "  << GREEN << std::flush;
     ageStr = getInputSameLine();
+    std::cout << RESET;
     age = std::stoi(ageStr);
 
-    std::cout << "        Gender   : " << std::flush;
+    std::cout << "        Gender   : "  << GREEN << std::flush;
     gender = getInputSameLine();
+    std::cout << RESET;
 
-    std::cout << "        Position : " << std::flush;
+    std::cout << "        Position : "<< GREEN << std::flush;
     position = getInputSameLine();
+    std::cout << RESET;
 
     std::string salaryStr;
-    std::cout << "        Salary   : " << std::flush;
+    std::cout << "        Salary   : " << GREEN << std::flush;
     salaryStr = getInputSameLine();
+    std::cout << RESET;
     salary = std::stod(salaryStr);
 
-    std::cout << "        Phone    : " << std::flush;
+    std::cout << "        Phone    : " << GREEN << std::flush;
     phone = getInputSameLine();
+    std::cout << RESET;
 
-    std::cout << "        Email    : " << std::flush;
+    std::cout << "        Email    : " << GREEN << std::flush;
     email = getInputSameLine();
+    std::cout << RESET;
 
-    std::cout << "\n Enter Login Credentials:\n\n";
+    std::cout << "\n        Enter Login Credentials:\n\n";
 
     while (true) {
         std::cout << "        Username : " << std::flush;
         username = getInputSameLine();
         if (usernameExists(username)) {
-            std::cout << " Username already taken! Try another.\n";
+            std::cout << "        Username already taken! Try another.\n";
         } else {
             break;
         }
     }
 
-    std::cout << "        Password : " << std::flush;
+    std::cout << "        Password : "  << GREEN << std::flush;
     password = getInputSameLine();
+    std::cout << RESET;
 
-    std::cout << "        Role (admin / employee) : " << std::flush;
+    std::cout << "        Role (admin / employee) : "  << GREEN << std::flush;
     role = getInputSameLine();
+    std::cout << RESET;
     if (role != "admin" && role != "employee") {
-        std::cout << " Invalid role! Defaulting to 'employee'.\n";
+        std::cout << RED << "        Invalid role! Defaulting to 'employee'.\n" << RESET;
         role = "employee";
     }
 
@@ -394,7 +437,7 @@ void Manager::addEmployee() {
     employees.push_back(emp);
     saveEmployees();
 
-    std::cout << "\n Employee added successfully! ID: " << newId << "\n";
+    std::cout << GREEN << "\n        Employee added successfully! ID: " << newId << "\n" << RESET;
     pressEnterToContinue();
 }
 
@@ -411,8 +454,9 @@ void Manager::viewEmployee() {
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << std::flush;
+        std::cout << "\n        Enter choice: "  << GREEN << std::flush;
         choiceStr = getInputSameLine();
+        std::cout << RESET;
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -457,7 +501,7 @@ void Manager::viewEmployee() {
         } else if (choice == 0) {
             break;  
         } else {
-            std::cout << "\n Invalid choice! Try again.\n";
+            std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
             pressEnterToContinue();
         }
     }
@@ -496,18 +540,18 @@ void Manager::editEmployee() {
                 try {
                     emp.salary = std::stod(newSalaryStr);
                 } catch (...) {
-                    std::cout << " Invalid salary, keeping original.\n";
+                    std::cout << RED << "        Invalid salary, keeping original.\n" RESET;
                 }
             }
 
             saveEmployees();
-            std::cout << "\n Employee updated successfully!\n";
+            std::cout << GREEN << "\n        Employee upadated successfully!" << "\n" << RESET;
             pressEnterToContinue();
             return;
         }
     }
 
-    std::cout << "\n Employee with ID '" << searchId << "' not found.\n";
+    std::cout << RED << "\n Employee with ID '" << searchId << "' not found.\n"<< RESET;
     pressEnterToContinue();
 }
 
@@ -530,7 +574,7 @@ void Manager::deleteEmployee() {
         if (employees[i].hasId(searchId)) {
             employees[i].displayDetails();
 
-            std::cout << "\n Are you sure? (y/n): ";
+            std::cout << "\n        Are you sure? (y/n): ";
             char confirm;
             std::cin >> confirm;
             std::cin.ignore();
@@ -538,9 +582,9 @@ void Manager::deleteEmployee() {
             if (confirm == 'y' || confirm == 'Y') {
                 employees.erase(employees.begin() + i);
                 saveEmployees();
-                std::cout << "\n Employee deleted successfully!\n";
+                std::cout << GREEN << "\n        Employee deleted successfully! " << "\n" << RESET;
             } else {
-                std::cout << "\n Deletion cancelled.\n";
+                std::cout << "\n        Deletion cancelled.\n";
             }
 
             pressEnterToContinue();
@@ -548,7 +592,7 @@ void Manager::deleteEmployee() {
         }
     }
 
-    std::cout << "\n Employee with ID '" << searchId << "' not found.\n";
+    std::cout << RED << "\n        Employee with ID '" << searchId << "' not found.\n"<< RESET;
     pressEnterToContinue();
 }
 
@@ -564,8 +608,9 @@ void Manager::searchEmployee() {
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << std::flush;
-        choiceStr = getInputSameLine();
+        std::cout << "\n        Enter choice: " << GREEN << std::flush;
+        choiceStr = getInputSameLine(); 
+        std::cout << RESET;
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -626,7 +671,7 @@ void Manager::searchEmployee() {
         } else if (choice == 0) {
             break;
         } else {
-            std::cout << "\n        Invalid choice! Try again.\n";
+            std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
             pressEnterToContinue();
         }
     }
@@ -640,17 +685,17 @@ void Manager::showAdminMenu() {
 
         std::string subtitle = "Logged in as: " + getCurrentUsername() + " [ADMIN]";
         printHeader(subtitle);
-        printMenuItem("1", "Add Employee");
-        printMenuItem("2", "View Employee");
-        printMenuItem("3", "Edit Employee");
-        printMenuItem("4", "Delete Employee");
-        printMenuItem("5", "Search Employee");
-        printMenuItem("0", "Logout");
+        printMenuItem("[1]", "Add Employee");
+        printMenuItem("[2]", "View Employee");
+        printMenuItem("[3]", "Edit Employee");
+        printMenuItem("[4]", "Delete Employee");
+        printMenuItem("[5]", "Search Employee");
+        printMenuItem("[0]", "Logout");
         printFooter();
-
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << std::flush;
+        std::cout << "\n        Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
+        std::cout << RESET;
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -670,7 +715,7 @@ void Manager::showAdminMenu() {
                 pressEnterToContinue();
                 return;
             default:
-                std::cout << "\n        Invalid choice! Try again.\n";
+                std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
                 pressEnterToContinue();
         }
     }
@@ -684,14 +729,15 @@ void Manager::showEmployeeMenu() {
 
         std::string subtitle = "Logged in as: " + getCurrentUsername() + " [EMPLOYEE]";
         printHeader(subtitle);
-        printMenuItem("1", "View Employee");
-        printMenuItem("2", "Search Employee");
-        printMenuItem("0", "Logout");
+        printMenuItem("[1]", "View Employee");
+        printMenuItem("[2]", "Search Employee");
+        printMenuItem("[0]", "Logout");
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << std::flush;
+        std::cout << "\n        Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
+        std::cout << RESET;
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -708,7 +754,7 @@ void Manager::showEmployeeMenu() {
                 pressEnterToContinue();
                 return;
             default:
-                std::cout << "\n        Invalid choice! Try again.\n";
+                std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
                 pressEnterToContinue();
         }
     }
