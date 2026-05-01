@@ -39,6 +39,9 @@ private:
 
     void printFooter();
 
+    int getTerminalWidth();
+    void printCentered(const std::string& text);
+
     void pressEnterToContinue();
 
 public:

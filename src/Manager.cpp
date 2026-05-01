@@ -9,6 +9,9 @@
 #include <vector>    
 #include <clocale>   
 #include <conio.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 #define RESET   "\033[0m"
 #define CYAN    "\033[36m"
 #define GREEN   "\033[32m"
@@ -32,30 +35,38 @@ void Manager::clearScreen() {
 }
 
 void Manager::pressEnterToContinue() {
-    std::cout << "\n        Press Enter to continue...";
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    int pad = (getTerminalWidth() - 26) / 2;
+    std::cout << "\n" << std::string(pad, ' ')
+              << CYAN << "Press Enter to continue..."
+              << RESET << std::flush;
+    _getch();
 }
 
 void Manager::printHeader(const std::string& subtitle) {
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
     std::cout << "\n";
-    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
-    std::cout << CYAN << "        | " << RESET << "                                   " << CYAN << "|\n" << RESET;
-    std::cout << CYAN << "        |   " << RESET << WHITE << std::left << std::setw(33) << subtitle << RESET << CYAN << "|\n" << RESET;
-    std::cout << CYAN << "        | " << RESET << "                                   " << CYAN << "|\n" << RESET;
-    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+    std::cout << p << CYAN << "+------------------------------------+\n" << RESET;
+    std::cout << p << CYAN << "|" << RESET << "                                    " << CYAN << "|\n" << RESET;
+    std::cout << p << CYAN << "|   " << RESET << WHITE << std::left << std::setw(33) << subtitle << RESET << CYAN << "|\n" << RESET;
+    std::cout << p << CYAN << "|" << RESET << "                                    " << CYAN << "|\n" << RESET;
+    std::cout << p << CYAN << "+------------------------------------+\n" << RESET;
 }
 
 void Manager::printMenuItem(const std::string& num,
                             const std::string& label) {
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
     std::string item = num + ". " + label;
-    std::cout << CYAN << "        |   " << RESET 
-              << WHITE << std::left << std::setw(33) << item << RESET 
+    std::cout << p << CYAN << "|   " << RESET
+              << WHITE << std::left << std::setw(33) << item << RESET
               << CYAN << "|\n" << RESET;
 }
 
 void Manager::printFooter() {
-    std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
+    std::cout << p << CYAN << "+------------------------------------+\n" << RESET;
 }
 
 void Manager::loadEmployees() {
@@ -277,6 +288,25 @@ std::string Manager::getPasswordInput() {
     return input;
 }
 
+int Manager::getTerminalWidth() {
+    int width = 80;
+#ifdef _WIN32
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(
+        GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    }
+#endif
+    return width;
+}
+
+void Manager::printCentered(const std::string& text) {
+    int termWidth = getTerminalWidth();
+    int padding = (termWidth - (int)text.size()) / 2;
+    if (padding > 0) std::cout << std::string(padding, ' ');
+    std::cout << text << "\n";
+}
+
 void Manager::showLoginScreen() {
     std::string username, password;
 
@@ -284,19 +314,21 @@ void Manager::showLoginScreen() {
         clearScreen();
 
         std::cout << "\n";
-        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
-        std::cout << CYAN << "        |                                    |\n" << RESET;
-        std::cout << CYAN << "        |      Employee Management System    |\n" << RESET;
-        std::cout << CYAN << "        |                                    |\n" << RESET;
-        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
-        std::cout << CYAN << "        |  [1]. Login                        |\n" << RESET;
-        std::cout << CYAN << "        |  [0]. Exit                         |\n" << RESET;
-        std::cout << CYAN << "        +------------------------------------+\n" << RESET;
+        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
+        printCentered(std::string(CYAN) + "|                                    |" + RESET);
+        printCentered(std::string(CYAN) + "|     Employee Management System     |" + RESET);
+        printCentered(std::string(CYAN) + "|                                    |" + RESET);
+        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
+        printCentered(std::string(CYAN) + "|  [1]. Login                        |" + RESET);
+        printCentered(std::string(CYAN) + "|  [0]. Exit                         |" + RESET);
+        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << GREEN << std::flush;
+        int boxPad = (getTerminalWidth() - 45) / 2;
+        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
         std::cout << RESET;
+        
         int choice;
         try {
             choice = std::stoi(choiceStr);
@@ -306,12 +338,17 @@ void Manager::showLoginScreen() {
 
         if (choice == 0) {
             clearScreen();
-            std::cout << "\n        Goodbye! See you next time!\n\n";
-            exit(0);  
-    }
+            int pad = (getTerminalWidth() - 26) / 2;
+            std::cout << "\n\n" << std::string(pad, ' ')
+                      << CYAN << "Goodbye! See you next time!"
+                      << RESET << "\n\n";
+            exit(0);
+        }
 
-        
-        std::cout << "\n        Username : "<< GREEN << std::flush;
+        if (choice != 1) continue;
+
+        clearScreen();
+        std::cout << "\n        Username : " << GREEN << std::flush;
         username = getInputSameLine();
         std::cout << RESET;
         
@@ -319,16 +356,16 @@ void Manager::showLoginScreen() {
         password = getPasswordInput();
         std::cout << RESET;
 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-
         if (login(username, password)) {
             std::cout << GREEN << "\n        Login successful! Welcome, "
                         << getCurrentUsername() << "!\n" << RESET;
             pressEnterToContinue();
             return;
         } else {
-            std::cout << RED << "\n        Invalid username or password!\n" << RESET;
+            int pad = (getTerminalWidth() - 30) / 2;
+            std::cout << "\n" << std::string(pad, ' ') 
+                      << RED << "Invalid username or password!" 
+                      << RESET << "\n";
             pressEnterToContinue();
         }
     }
@@ -437,8 +474,9 @@ void Manager::addEmployee() {
     employees.push_back(emp);
     saveEmployees();
 
-    std::cout << GREEN << "\n        Employee added successfully! ID: " << newId << "\n" << RESET;
-    pressEnterToContinue();
+    std::string msg = "Employee added successfully! ID: " + newId;
+    int pad = (getTerminalWidth() - (int)msg.size()) / 2;
+    std::cout << "\n" << std::string(pad, ' ') << GREEN << msg << RESET << "\n";
 }
 
 void Manager::viewEmployee() {
@@ -447,16 +485,18 @@ void Manager::viewEmployee() {
     while (true) {
         clearScreen();
         printHeader("View Employee");
-        printMenuItem("1", "View All");
-        printMenuItem("2", "Sort by ID");
-        printMenuItem("3", "Sort by Salary");
-        printMenuItem("0", "Back");
+        printMenuItem("[1]", "View All");
+        printMenuItem("[2]", "Sort by ID");
+        printMenuItem("[3]", "Sort by Salary");
+        printMenuItem("[0]", "Back");
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: "  << GREEN << std::flush;
+        int boxPad = (getTerminalWidth() - 37) / 2;
+        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
         std::cout << RESET;
+
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -518,6 +558,7 @@ void Manager::editEmployee() {
     std::cin.ignore();
 
     for (Employee& emp : employees) {
+        clearScreen();
         if (emp.hasId(searchId)) {
             emp.displayDetails();
 
@@ -545,7 +586,10 @@ void Manager::editEmployee() {
             }
 
             saveEmployees();
-            std::cout << GREEN << "\n        Employee upadated successfully!" << "\n" << RESET;
+            int pad = (getTerminalWidth() - 30) / 2;
+            std::cout << "\n" << std::string(pad, ' ') 
+                      << GREEN << "Employee updated successfully!" 
+                      << RESET << "\n";
             pressEnterToContinue();
             return;
         }
@@ -565,7 +609,10 @@ void Manager::deleteEmployee() {
     searchId = getInputSameLine();
 
     if (currentUser != nullptr && currentUser->hasId(searchId)) {
-        std::cout << "\n You cannot delete your own account!\n";
+        int pad = (getTerminalWidth() - 34) / 2;
+        std::cout << "\n" << std::string(pad, ' ') 
+                  << RED << "You cannot delete your own account!" 
+                  << RESET << "\n";
         pressEnterToContinue();
         return;
     }
@@ -582,7 +629,10 @@ void Manager::deleteEmployee() {
             if (confirm == 'y' || confirm == 'Y') {
                 employees.erase(employees.begin() + i);
                 saveEmployees();
-                std::cout << GREEN << "\n        Employee deleted successfully! " << "\n" << RESET;
+                int pad = (getTerminalWidth() - 30) / 2;
+                std::cout << "\n" << std::string(pad, ' ') 
+                          << GREEN << "Employee deleted successfully!" 
+                          << RESET << "\n";
             } else {
                 std::cout << "\n        Deletion cancelled.\n";
             }
@@ -602,15 +652,17 @@ void Manager::searchEmployee() {
     while (true) {
         clearScreen();
         printHeader("Search Employee");
-        printMenuItem("1", "Search by ID");
-        printMenuItem("2", "Search by Name");
-        printMenuItem("0", "Back");
+        printMenuItem("[1]", "Search by ID");
+        printMenuItem("[2]", "Search by Name");
+        printMenuItem("[0]", "Back");
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << GREEN << std::flush;
-        choiceStr = getInputSameLine(); 
+        int boxPad = (getTerminalWidth() - 37) / 2;
+        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
+        choiceStr = getInputSameLine();
         std::cout << RESET;
+
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -693,9 +745,11 @@ void Manager::showAdminMenu() {
         printMenuItem("[0]", "Logout");
         printFooter();
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << GREEN << std::flush;
+        int boxPad = (getTerminalWidth() - 37) / 2;
+        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
         std::cout << RESET;
+
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
@@ -708,12 +762,16 @@ void Manager::showAdminMenu() {
             case 3: editEmployee();   break;
             case 4: deleteEmployee(); break;
             case 5: searchEmployee(); break;
-            case 0:
+            case 0:{
                 logout();
                 clearScreen();
-                std::cout << "\n        Logged out successfully!\n";
+                int pad = (getTerminalWidth() - 24) / 2;
+                std::cout << "\n" << std::string(pad, ' ') 
+                          << GREEN << "Logged out successfully!" 
+                          << RESET << "\n";
                 pressEnterToContinue();
                 return;
+            }
             default:
                 std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
                 pressEnterToContinue();
@@ -735,9 +793,11 @@ void Manager::showEmployeeMenu() {
         printFooter();
 
         std::string choiceStr;
-        std::cout << "\n        Enter choice: " << GREEN << std::flush;
+        int boxPad = (getTerminalWidth() - 37) / 2;
+        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
         std::cout << RESET;
+
         try {
             choice = std::stoi(choiceStr);
         } catch (...) {
