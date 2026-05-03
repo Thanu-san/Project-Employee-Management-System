@@ -348,19 +348,27 @@ void Manager::showLoginScreen() {
         if (choice != 1) continue;
 
         clearScreen();
-        std::cout << "\n        Username : " << GREEN << std::flush;
+        int pad = (getTerminalWidth() - 33) / 2;
+        std::string p(pad, ' ');
+
+
+        std::cout << "\n" << p << "Username : " << GREEN << std::flush;
         username = getInputSameLine();
         std::cout << RESET;
         
-        std::cout << "\n        Password : "  << GREEN << std::flush;
+        std::cout << p << "Password : " << GREEN << std::flush;
         password = getPasswordInput();
         std::cout << RESET;
 
         if (login(username, password)) {
-            std::cout << GREEN << "\n        Login successful! Welcome, "
-                        << getCurrentUsername() << "!\n" << RESET;
+            int padMsg = (getTerminalWidth() - 30) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                      << GREEN << "Login successful! Welcome, "
+                      << getCurrentUsername() << "!"
+                      << RESET << "\n";
             pressEnterToContinue();
             return;
+
         } else {
             int pad = (getTerminalWidth() - 30) / 2;
             std::cout << "\n" << std::string(pad, ' ') 
@@ -409,62 +417,76 @@ void Manager::addEmployee() {
     int age;
     double salary;
 
-    std::cout << "\n        Enter Employee Details:\n\n";
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
 
-    std::cout << "        Name      : "  << GREEN << std::flush;
+    std::cout << "\n" << p << "Enter Employee Details:\n\n";
+
+    std::cout << p << "Name     : " << GREEN << std::flush;
     name = getInputSameLine();
     std::cout << RESET;
 
     std::string ageStr;
-    std::cout << "        Age      : "  << GREEN << std::flush;
+    while (true) {
+    std::cout << p << "Age      : " << GREEN << std::flush;
     ageStr = getInputSameLine();
     std::cout << RESET;
-    age = std::stoi(ageStr);
+    try { age = std::stoi(ageStr); break; }
+    catch (...) {
+        std::cout << p << RED << "Invalid age! Try again.\n" << RESET;
+        }
+    }
 
-    std::cout << "        Gender   : "  << GREEN << std::flush;
+    std::cout << p << "Gender   : "  << GREEN << std::flush;
     gender = getInputSameLine();
     std::cout << RESET;
 
-    std::cout << "        Position : "<< GREEN << std::flush;
+    std::cout << p << "Position : " << GREEN << std::flush;
     position = getInputSameLine();
     std::cout << RESET;
 
     std::string salaryStr;
-    std::cout << "        Salary   : " << GREEN << std::flush;
+    while (true) {
+    std::cout << p << "Salary   : " << GREEN << std::flush;
     salaryStr = getInputSameLine();
     std::cout << RESET;
-    salary = std::stod(salaryStr);
-
-    std::cout << "        Phone    : " << GREEN << std::flush;
-    phone = getInputSameLine();
-    std::cout << RESET;
-
-    std::cout << "        Email    : " << GREEN << std::flush;
-    email = getInputSameLine();
-    std::cout << RESET;
-
-    std::cout << "\n        Enter Login Credentials:\n\n";
-
-    while (true) {
-        std::cout << "        Username : " << std::flush;
-        username = getInputSameLine();
-        if (usernameExists(username)) {
-            std::cout << "        Username already taken! Try another.\n";
-        } else {
-            break;
+    try { salary = std::stod(salaryStr); break; }
+    catch (...) {
+        std::cout << p << RED << "Invalid salary! Try again.\n" << RESET;
         }
     }
 
-    std::cout << "        Password : "  << GREEN << std::flush;
+    std::cout << p << "Phone    : " << GREEN << std::flush;
+    phone = getInputSameLine();
+    std::cout << RESET;
+
+    std::cout << p << "Email    : " << GREEN << std::flush;
+    email = getInputSameLine();
+    std::cout << RESET;
+
+    std::cout << "\n" << p << "Enter Login Credentials:\n\n";
+
+    while (true) {
+    std::cout << p << "Username : " << GREEN << std::flush;
+    username = getInputSameLine();
+    std::cout << RESET;
+    if (usernameExists(username)) {
+        std::cout << p << RED << "Username already taken! Try another.\n" << RESET;
+    } else {
+        break;
+    }
+    }
+
+    std::cout << p << "Password : "  << GREEN << std::flush;
     password = getInputSameLine();
     std::cout << RESET;
 
-    std::cout << "        Role (admin / employee) : "  << GREEN << std::flush;
+    while (true) {
+    std::cout << p << "Role (admin/employee) : " << GREEN << std::flush;
     role = getInputSameLine();
     std::cout << RESET;
-    if (role != "admin" && role != "employee") {
-        std::cout << RED << "        Invalid role! Defaulting to 'employee'.\n" << RESET;
-        role = "employee";
+    if (role == "admin" || role == "employee") break;
+    std::cout << p << RED << "Invalid role! Please enter 'admin' or 'employee'.\n" << RESET;
     }
 
     std::string newId = generateNextId();
@@ -475,8 +497,8 @@ void Manager::addEmployee() {
     saveEmployees();
 
     std::string msg = "Employee added successfully! ID: " + newId;
-    int pad = (getTerminalWidth() - (int)msg.size()) / 2;
-    std::cout << "\n" << std::string(pad, ' ') << GREEN << msg << RESET << "\n";
+    int padMsg = (getTerminalWidth() - (int)msg.size()) / 2;
+    std::cout << "\n" << std::string(padMsg, ' ') << GREEN << msg << RESET << "\n";
 }
 
 void Manager::viewEmployee() {
@@ -539,9 +561,12 @@ void Manager::viewEmployee() {
             pressEnterToContinue();
 
         } else if (choice == 0) {
-            break;  
+            break;
         } else {
-            std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
+            int padMsg = (getTerminalWidth() - 22) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                      << RED << "Invalid choice! Try again."
+                      << RESET << "\n";
             pressEnterToContinue();
         }
     }
@@ -552,51 +577,60 @@ void Manager::editEmployee() {
     printHeader("Edit Employee");
     printFooter();
 
-    std::string searchId;
-    std::cout << "\n        Enter Employee ID to edit: ";
-    std::cin >> searchId;
-    std::cin.ignore();
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
+
+    std::cout << "\n" << p << "Enter Employee ID to edit: " << GREEN << std::flush;
+    std::string searchId = getInputSameLine();
+    std::cout << RESET;
 
     for (Employee& emp : employees) {
         clearScreen();
+        printHeader("Edit Employee");
+        printFooter();
         if (emp.hasId(searchId)) {
             emp.displayDetails();
 
-            std::cout << "\n Enter new details (press Enter to keep current):\n\n";
+            std::cout << "\n" << p << "Press Enter to keep current value.\n\n";
 
-            std::string newName;
-            std::cout << " New Name [" << emp.name << "] : ";
-            std::getline(std::cin, newName);
+            std::cout << p << "New Name [" << emp.name << "] : " << GREEN << std::flush;
+            std::string newName = getInputOptional();
+            std::cout << RESET;
             if (!newName.empty()) emp.name = newName;
 
-            std::string newPosition;
-            std::cout << " New Position [" << emp.position << "] : ";
-            std::getline(std::cin, newPosition);
+            std::cout << p << "New Position [" << emp.position << "] : " << GREEN << std::flush;
+            std::string newPosition = getInputOptional();
+            std::cout << RESET;
             if (!newPosition.empty()) emp.position = newPosition;
 
-            std::string newSalaryStr;
-            std::cout << " New Salary [" << emp.salary << "] : ";
-            std::getline(std::cin, newSalaryStr);
+            std::cout << p << "New Salary [" << emp.salary << "] : " << GREEN << std::flush;
+            std::string newSalaryStr = getInputOptional();
+            std::cout << RESET;
             if (!newSalaryStr.empty()) {
-                try {
-                    emp.salary = std::stod(newSalaryStr);
-                } catch (...) {
-                    std::cout << RED << "        Invalid salary, keeping original.\n" RESET;
+            try {
+                emp.salary = std::stod(newSalaryStr);
+            } catch (...) {
+                int padMsg = (getTerminalWidth() - 30) / 2;
+                std::cout << std::string(padMsg, ' ')
+                          << RED << "Invalid salary, keeping original.\n" << RESET;
                 }
             }
 
             saveEmployees();
-            int pad = (getTerminalWidth() - 30) / 2;
-            std::cout << "\n" << std::string(pad, ' ') 
-                      << GREEN << "Employee updated successfully!" 
+            int padMsg = (getTerminalWidth() - 30) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                      << GREEN << "Employee updated successfully!"
                       << RESET << "\n";
             pressEnterToContinue();
             return;
         }
     }
 
-    std::cout << RED << "\n Employee with ID '" << searchId << "' not found.\n"<< RESET;
-    pressEnterToContinue();
+    int padMsg = (getTerminalWidth() - 30) / 2;
+    std::cout << "\n" << std::string(padMsg, ' ')
+              << RED << "Employee with ID '" << searchId << "' not found."
+              << RESET << "\n";
+        pressEnterToContinue();
 }
 
 void Manager::deleteEmployee() {
@@ -604,14 +638,17 @@ void Manager::deleteEmployee() {
     printHeader("Delete Employee");
     printFooter();
 
-    std::string searchId;
-    std::cout << "\n        Enter Employee ID to delete: " << std::flush;
-    searchId = getInputSameLine();
+    int pad = (getTerminalWidth() - 38) / 2;
+    std::string p(pad, ' ');
+
+    std::cout << "\n" << p << "Enter Employee ID to delete: " << GREEN << std::flush;
+    std::string searchId = getInputSameLine();
+    std::cout << RESET;
 
     if (currentUser != nullptr && currentUser->hasId(searchId)) {
-        int pad = (getTerminalWidth() - 34) / 2;
-        std::cout << "\n" << std::string(pad, ' ') 
-                  << RED << "You cannot delete your own account!" 
+        int padMsg = (getTerminalWidth() - 36) / 2;
+        std::cout << "\n" << std::string(padMsg, ' ')
+                  << RED << "You cannot delete your own account!"
                   << RESET << "\n";
         pressEnterToContinue();
         return;
@@ -621,20 +658,22 @@ void Manager::deleteEmployee() {
         if (employees[i].hasId(searchId)) {
             employees[i].displayDetails();
 
-            std::cout << "\n        Are you sure? (y/n): ";
-            char confirm;
-            std::cin >> confirm;
-            std::cin.ignore();
+            std::cout << "\n" << p << "Are you sure? (y/n): " << GREEN << std::flush;
+            std::string confirm = getInputSameLine();
+            std::cout << RESET;
 
-            if (confirm == 'y' || confirm == 'Y') {
+            if (confirm == "y" || confirm == "Y") {
                 employees.erase(employees.begin() + i);
                 saveEmployees();
-                int pad = (getTerminalWidth() - 30) / 2;
-                std::cout << "\n" << std::string(pad, ' ') 
-                          << GREEN << "Employee deleted successfully!" 
-                          << RESET << "\n";
+                int padMsg = (getTerminalWidth() - 30) / 2;
+                std::cout << "\n" << std::string(padMsg, ' ')
+                      << GREEN << "Employee deleted successfully!"
+                      << RESET << "\n";
             } else {
-                std::cout << "\n        Deletion cancelled.\n";
+                int padMsg = (getTerminalWidth() - 20) / 2;
+                std::cout << "\n" << std::string(padMsg, ' ')
+                      << YELLOW << "Deletion cancelled."
+                      << RESET << "\n";
             }
 
             pressEnterToContinue();
@@ -642,7 +681,10 @@ void Manager::deleteEmployee() {
         }
     }
 
-    std::cout << RED << "\n        Employee with ID '" << searchId << "' not found.\n"<< RESET;
+    int padMsg = (getTerminalWidth() - 30) / 2;
+    std::cout << "\n" << std::string(padMsg, ' ')
+              << RED << "Employee with ID '" << searchId << "' not found."
+              << RESET << "\n";
     pressEnterToContinue();
 }
 
@@ -658,8 +700,9 @@ void Manager::searchEmployee() {
         printFooter();
 
         std::string choiceStr;
-        int boxPad = (getTerminalWidth() - 37) / 2;
-        std::cout << "\n" << std::string(boxPad, ' ') << "Enter choice: " << GREEN << std::flush;
+        int pad = (getTerminalWidth() - 38) / 2;
+        std::string p(pad, ' ');
+        std::cout << "\n" << p << "Enter choice: " << GREEN << std::flush;
         choiceStr = getInputSameLine();
         std::cout << RESET;
 
@@ -674,9 +717,9 @@ void Manager::searchEmployee() {
             printHeader("Search by ID");
             printFooter();
 
-            std::string searchId;
-            std::cout << "\n        Enter Employee ID: " << std::flush;
-            searchId = getInputSameLine();
+            std::cout << "\n" << p << "Enter Employee ID: " << GREEN << std::flush;
+            std::string searchId = getInputSameLine();
+            std::cout << RESET;
 
             bool found = false;
             for (const Employee& emp : employees) {
@@ -688,8 +731,11 @@ void Manager::searchEmployee() {
             }
 
             if (!found) {
-                std::cout << "\n        No employee found with ID '"
-                          << searchId << "'.\n";
+                int padMsg = (getTerminalWidth() - 30) / 2;
+                std::cout << "\n" << std::string(padMsg, ' ')
+                          << RED << "No employee found with ID '"
+                          << searchId << "'."
+                          << RESET << "\n";
             }
 
             pressEnterToContinue();
@@ -699,9 +745,9 @@ void Manager::searchEmployee() {
             printHeader("Search by Name");
             printFooter();
 
-            std::string searchTerm;
-            std::cout << "\n        Enter name to search: " << std::flush;
-            searchTerm = getInputSameLine();
+            std::cout << "\n" << p << "Enter name to search: " << GREEN << std::flush;
+            std::string searchTerm = getInputSameLine();
+            std::cout << RESET;
             
             std::vector<Employee> results;
             for (const Employee& emp : employees) {
@@ -710,20 +756,29 @@ void Manager::searchEmployee() {
                 }
             }
 
-            if (results.empty()) {
-                std::cout << "\n        No employee found with name containing '"
-                          << searchTerm << "'.\n";
-            } else {
-                std::cout << "\n        Found " << results.size() << " result(s):\n";
-                displayTable(results);
-            }
+        if (results.empty()) {
+            int padMsg = (getTerminalWidth() - 40) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                          << RED << "No employee found with name containing '"
+                          << searchTerm << "'."
+                          << RESET << "\n";
+        } else {
+            int padMsg = (getTerminalWidth() - 20) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                          << GREEN << "Found " << results.size() << " result(s):"
+                          << RESET << "\n";
+            displayTable(results);
+        }
 
             pressEnterToContinue();
 
         } else if (choice == 0) {
             break;
         } else {
-            std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
+            int padMsg = (getTerminalWidth() - 22) / 2;
+            std::cout << "\n" << std::string(padMsg, ' ')
+                      << RED << "Invalid choice! Try again."
+                      << RESET << "\n";
             pressEnterToContinue();
         }
     }
@@ -772,9 +827,13 @@ void Manager::showAdminMenu() {
                 pressEnterToContinue();
                 return;
             }
-            default:
-                std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
+            default: {
+                int padMsg = (getTerminalWidth() - 22) / 2;
+                std::cout << "\n" << std::string(padMsg, ' ')
+                          << RED << "Invalid choice! Try again."
+                          << RESET << "\n";
                 pressEnterToContinue();
+            }
         }
     }
 }
@@ -813,9 +872,13 @@ void Manager::showEmployeeMenu() {
                 std::cout << "\n        Logged out successfully!\n";
                 pressEnterToContinue();
                 return;
-            default:
-                std::cout << RED << "\n        Invalid choice! Try again.\n" << RESET;
+            default: {
+                int padMsg = (getTerminalWidth() - 22) / 2;
+                std::cout << "\n" << std::string(padMsg, ' ')
+                          << RED << "Invalid choice! Try again."
+                          << RESET << "\n";
                 pressEnterToContinue();
+            }
         }
     }
 }

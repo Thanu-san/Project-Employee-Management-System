@@ -4,6 +4,10 @@
 #include <iomanip>
 #include <algorithm>
 #include <string>
+#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 
 Employee::Employee()
     : id(""), name(""), age(0), gender(""),
@@ -100,20 +104,34 @@ bool Employee::matches(const std::string& inputUsername,
 }
 
 void Employee::displayDetails() const {
-    std::cout << "\n      ====================================\n";
-    std::cout << "               Employee Details\n";
-    std::cout << "      ====================================\n";
-    std::cout << "        ID       : " << id       << "\n";
-    std::cout << "        Name     : " << name     << "\n";
-    std::cout << "        Age      : " << age      << "\n";
-    std::cout << "        Gender   : " << gender   << "\n";
-    std::cout << "        Position : " << position << "\n";
-    std::cout << "        Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
-    std::cout << "        Phone    : " << phone    << "\n";
-    std::cout << "        Email    : " << email    << "\n";
-    std::cout << "        Username : " << username << "\n";
-    std::cout << "        Role     : " << role     << "\n";
-    std::cout << "      ====================================\n";
+#ifdef _WIN32
+    #include <windows.h>
+#endif
+    int termWidth = 80;
+#ifdef _WIN32
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(
+        GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        termWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    }
+#endif
+    int pad = (termWidth - 38) / 2;
+    std::string p(pad, ' ');
+
+    std::cout << "\n" << p << "====================================\n";
+    std::cout << p << "         Employee Details\n";
+    std::cout << p << "====================================\n";
+    std::cout << p << "ID       : " << id       << "\n";
+    std::cout << p << "Name     : " << name     << "\n";
+    std::cout << p << "Age      : " << age      << "\n";
+    std::cout << p << "Gender   : " << gender   << "\n";
+    std::cout << p << "Position : " << position << "\n";
+    std::cout << p << "Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
+    std::cout << p << "Phone    : " << phone    << "\n";
+    std::cout << p << "Email    : " << email    << "\n";
+    std::cout << p << "Username : " << username << "\n";
+    std::cout << p << "Role     : " << role     << "\n";
+    std::cout << p << "====================================\n";
 }
 
 bool Employee::hasId(const std::string& searchId) const {
