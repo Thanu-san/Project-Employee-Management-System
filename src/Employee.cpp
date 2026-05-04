@@ -104,9 +104,6 @@ bool Employee::matches(const std::string& inputUsername,
 }
 
 void Employee::displayDetails() const {
-#ifdef _WIN32
-    #include <windows.h>
-#endif
     int termWidth = 80;
 #ifdef _WIN32
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -115,23 +112,39 @@ void Employee::displayDetails() const {
         termWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     }
 #endif
-    int pad = (termWidth - 38) / 2;
+    int pad = (termWidth - 55) / 2;
     std::string p(pad, ' ');
 
-    std::cout << "\n" << p << "====================================\n";
-    std::cout << p << "         Employee Details\n";
-    std::cout << p << "====================================\n";
-    std::cout << p << "ID       : " << id       << "\n";
-    std::cout << p << "Name     : " << name     << "\n";
-    std::cout << p << "Age      : " << age      << "\n";
-    std::cout << p << "Gender   : " << gender   << "\n";
-    std::cout << p << "Position : " << position << "\n";
-    std::cout << p << "Salary   : " << std::fixed << std::setprecision(2) << salary << "\n";
-    std::cout << p << "Phone    : " << phone    << "\n";
-    std::cout << p << "Email    : " << email    << "\n";
-    std::cout << p << "Username : " << username << "\n";
-    std::cout << p << "Role     : " << role     << "\n";
-    std::cout << p << "====================================\n";
+    // Color defines (same as Manager.cpp)
+    const std::string CYAN   = "\033[36m";
+    const std::string GREEN  = "\033[32m";
+    const std::string YELLOW = "\033[33m";
+    const std::string WHITE  = "\033[37m";
+    const std::string GRAY   = "\033[90m";
+    const std::string RESET  = "\033[0m";
+
+    std::cout << "\n";
+    std::cout << p << CYAN << "+===========================================+" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << YELLOW << "           EMPLOYEE  PROFILE               " << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "+===========================================+" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "ID"       << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << id       << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Name"     << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << name     << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Age"      << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << age      << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Gender"   << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << gender   << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Position" << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << position << RESET << CYAN << "|" << RESET << "\n";
+
+    // Salary in green
+    std::ostringstream salaryStream;
+    salaryStream << std::fixed << std::setprecision(2) << salary;
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Salary"   << RESET << " " << CYAN << ":" << RESET << "  " << GREEN << std::setw(28) << salaryStream.str() << RESET << CYAN << "|" << RESET << "\n";
+
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Phone"    << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << phone    << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Email"    << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << email    << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Username" << RESET << " " << CYAN << ":" << RESET << "  " << WHITE << std::setw(28) << username << RESET << CYAN << "|" << RESET << "\n";
+
+    // Role in yellow
+    std::cout << p << CYAN << "|" << RESET << "  " << GRAY << std::left << std::setw(9) << "Role"     << RESET << " " << CYAN << ":" << RESET << "  " << YELLOW << std::setw(28) << role    << RESET << CYAN << "|" << RESET << "\n";
+    std::cout << p << CYAN << "+===========================================+" << RESET << "\n";
 }
 
 bool Employee::hasId(const std::string& searchId) const {

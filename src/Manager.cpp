@@ -35,7 +35,7 @@ void Manager::clearScreen() {
 }
 
 void Manager::pressEnterToContinue() {
-    int pad = (getTerminalWidth() - 26) / 2;
+    int pad = (getTerminalWidth() - 38) / 2;
     std::cout << "\n" << std::string(pad, ' ')
               << CYAN << "Press Enter to continue..."
               << RESET << std::flush;
@@ -314,14 +314,16 @@ void Manager::showLoginScreen() {
         clearScreen();
 
         std::cout << "\n";
-        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
-        printCentered(std::string(CYAN) + "|                                    |" + RESET);
-        printCentered(std::string(CYAN) + "|     Employee Management System     |" + RESET);
-        printCentered(std::string(CYAN) + "|                                    |" + RESET);
-        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
-        printCentered(std::string(CYAN) + "|  [1]. Login                        |" + RESET);
-        printCentered(std::string(CYAN) + "|  [0]. Exit                         |" + RESET);
-        printCentered(std::string(CYAN) + "+------------------------------------+" + RESET);
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        printCentered(std::string(CYAN) + "*                                           *" + RESET);
+        printCentered(std::string(CYAN) + "*      EMPLOYEE  MANAGEMENT  SYSTEM         *" + RESET);
+        printCentered(std::string(CYAN) + "*                                           *" + RESET);
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        std::cout << "\n";
+        printCentered(std::string(CYAN) + "+-----------------------------------+" + RESET);
+        printCentered(std::string(CYAN) + "|   1. Login                        |" + RESET);
+        printCentered(std::string(CYAN) + "|   0. Exit                         |" + RESET);
+        printCentered(std::string(CYAN) + "+-----------------------------------+" + RESET);
 
         std::string choiceStr;
         int boxPad = (getTerminalWidth() - 45) / 2;
@@ -338,7 +340,12 @@ void Manager::showLoginScreen() {
 
         if (choice == 0) {
             clearScreen();
+
             int pad = (getTerminalWidth() - 26) / 2;
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*      EMPLOYEE  MANAGEMENT  SYSTEM         *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";
             std::cout << "\n\n" << std::string(pad, ' ')
                       << CYAN << "Goodbye! See you next time!"
                       << RESET << "\n\n";
@@ -348,6 +355,10 @@ void Manager::showLoginScreen() {
         if (choice != 1) continue;
 
         clearScreen();
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        printCentered(std::string(CYAN) + "*                  Login                    *" + RESET);
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        std::cout << "\n";
         int pad = (getTerminalWidth() - 33) / 2;
         std::string p(pad, ' ');
 
@@ -361,7 +372,7 @@ void Manager::showLoginScreen() {
         std::cout << RESET;
 
         if (login(username, password)) {
-            int padMsg = (getTerminalWidth() - 30) / 2;
+            int padMsg = (getTerminalWidth() - 38) / 2;
             std::cout << "\n" << std::string(padMsg, ' ')
                       << GREEN << "Login successful! Welcome, "
                       << getCurrentUsername() << "!"
@@ -409,8 +420,11 @@ std::string Manager::getCurrentUsername() const {
 
 void Manager::addEmployee() {
     clearScreen();
-    printHeader("Add New Employee");
-    printFooter();
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    printCentered(std::string(CYAN) + "*             Add New Employee              *" + RESET);
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    std::cout << "\n";
+
 
     std::string name, gender, position, phone, email;
     std::string username, password, role;
@@ -527,16 +541,19 @@ void Manager::viewEmployee() {
 
         if (choice == 1) {
             clearScreen();
-            printHeader("All Employees");
-            printFooter();
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*             View All Employee             *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";
             displayTable(employees);
             pressEnterToContinue();
 
         } else if (choice == 2) {
             clearScreen();
-            printHeader("Employees Sorted by ID");
-            printFooter();
-
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*                Sort by ID                 *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";
             std::vector<Employee> sorted = employees;
             std::sort(sorted.begin(), sorted.end(),
                 [](const Employee& a, const Employee& b) {
@@ -548,9 +565,10 @@ void Manager::viewEmployee() {
 
         } else if (choice == 3) {
             clearScreen();
-            printHeader("Employees Sorted by Salary");
-            printFooter();
-
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*               Sort by Salary              *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";
             std::vector<Employee> sorted = employees;
             std::sort(sorted.begin(), sorted.end(),
                 [](const Employee& a, const Employee& b) {
@@ -574,10 +592,11 @@ void Manager::viewEmployee() {
 
 void Manager::editEmployee() {
     clearScreen();
-    printHeader("Edit Employee");
-    printFooter();
-
-    int pad = (getTerminalWidth() - 38) / 2;
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    printCentered(std::string(CYAN) + "*               Edit Employee               *" + RESET);
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    std::cout << "\n";    
+    int pad = (getTerminalWidth() - 44) / 2;
     std::string p(pad, ' ');
 
     std::cout << "\n" << p << "Enter Employee ID to edit: " << GREEN << std::flush;
@@ -586,8 +605,10 @@ void Manager::editEmployee() {
 
     for (Employee& emp : employees) {
         clearScreen();
-        printHeader("Edit Employee");
-        printFooter();
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        printCentered(std::string(CYAN) + "*               Edit Employee               *" + RESET);
+        printCentered(std::string(CYAN) + "*********************************************" + RESET);
+        std::cout << "\n";    
         if (emp.hasId(searchId)) {
             emp.displayDetails();
 
@@ -617,7 +638,7 @@ void Manager::editEmployee() {
             }
 
             saveEmployees();
-            int padMsg = (getTerminalWidth() - 30) / 2;
+            int padMsg = (getTerminalWidth() - 38) / 2;
             std::cout << "\n" << std::string(padMsg, ' ')
                       << GREEN << "Employee updated successfully!"
                       << RESET << "\n";
@@ -635,9 +656,10 @@ void Manager::editEmployee() {
 
 void Manager::deleteEmployee() {
     clearScreen();
-    printHeader("Delete Employee");
-    printFooter();
-
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    printCentered(std::string(CYAN) + "*              Delete Employee              *" + RESET);
+    printCentered(std::string(CYAN) + "*********************************************" + RESET);
+    std::cout << "\n";    
     int pad = (getTerminalWidth() - 38) / 2;
     std::string p(pad, ' ');
 
@@ -665,12 +687,12 @@ void Manager::deleteEmployee() {
             if (confirm == "y" || confirm == "Y") {
                 employees.erase(employees.begin() + i);
                 saveEmployees();
-                int padMsg = (getTerminalWidth() - 30) / 2;
+                int padMsg = (getTerminalWidth() - 38) / 2;
                 std::cout << "\n" << std::string(padMsg, ' ')
                       << GREEN << "Employee deleted successfully!"
                       << RESET << "\n";
             } else {
-                int padMsg = (getTerminalWidth() - 20) / 2;
+                int padMsg = (getTerminalWidth() - 35) / 2;
                 std::cout << "\n" << std::string(padMsg, ' ')
                       << YELLOW << "Deletion cancelled."
                       << RESET << "\n";
@@ -714,9 +736,10 @@ void Manager::searchEmployee() {
 
         if (choice == 1) {
             clearScreen();
-            printHeader("Search by ID");
-            printFooter();
-
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*               Search by ID                *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";    
             std::cout << "\n" << p << "Enter Employee ID: " << GREEN << std::flush;
             std::string searchId = getInputSameLine();
             std::cout << RESET;
@@ -742,9 +765,10 @@ void Manager::searchEmployee() {
 
         } else if (choice == 2) {
             clearScreen();
-            printHeader("Search by Name");
-            printFooter();
-
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            printCentered(std::string(CYAN) + "*              Search by Name               *" + RESET);
+            printCentered(std::string(CYAN) + "*********************************************" + RESET);
+            std::cout << "\n";    
             std::cout << "\n" << p << "Enter name to search: " << GREEN << std::flush;
             std::string searchTerm = getInputSameLine();
             std::cout << RESET;
@@ -820,7 +844,7 @@ void Manager::showAdminMenu() {
             case 0:{
                 logout();
                 clearScreen();
-                int pad = (getTerminalWidth() - 24) / 2;
+                int pad = (getTerminalWidth() - 35) / 2;
                 std::cout << "\n" << std::string(pad, ' ') 
                           << GREEN << "Logged out successfully!" 
                           << RESET << "\n";
