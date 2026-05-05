@@ -1,48 +1,31 @@
-
 #pragma once
-
-#include <string>   
-#include <vector>   
-
-#include "Employee.hpp"  
+#include <string>
+#include <vector>
+#include "Employee.hpp"
 
 class Manager {
 private:
     std::vector<Employee> employees;
-
     Employee* currentUser;
-
-    std::string employeeFile; 
+    std::string employeeFile;
+    Employee hardcodedAdmin;
 
     void saveEmployees();
-
     std::string generateNextId();
-
-    std::string getInputSameLine();
-
-    std::string getInputOptional();
-
-    std::string getPasswordInput();
-
     bool idExists(const std::string& id);
-
     bool usernameExists(const std::string& username);
-
     void displayTable(const std::vector<Employee>& list);
-
     void clearScreen();
-
     void printHeader(const std::string& subtitle);
-
-    void printMenuItem(const std::string& num,
-                       const std::string& label);
-
+    void printMenuItem(const std::string& num, const std::string& label);
     void printFooter();
-
-    int getTerminalWidth();
+    void pressEnterToContinue();
+    int  getTerminalWidth();
     void printCentered(const std::string& text);
 
-    void pressEnterToContinue();
+    std::string getInputSameLine();   
+    std::string getInputOptional();   
+    std::string getPasswordInput();   
 
 public:
     Manager(const std::string& employeeFile);
@@ -50,29 +33,20 @@ public:
     void loadEmployees();
 
     void showLoginScreen();
-
-    bool login(const std::string& username,
-               const std::string& password);
-
+    bool login(const std::string& username,const std::string& password);
+    void signUp();              
     void logout();
-
     bool isLoggedIn() const;
-
     bool currentUserIsAdmin() const;
-
     std::string getCurrentUsername() const;
 
     void addEmployee();
-
     void viewEmployee();
-
     void editEmployee();
-
     void deleteEmployee();
 
     void searchEmployee();
 
     void showAdminMenu();
-
     void showEmployeeMenu();
 };

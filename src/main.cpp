@@ -9,9 +9,7 @@ int main() {
     } catch (...) {}
 
     try {
-
         Manager manager("data/employees.csv");
-        std::cout << "Manager created successfully!" << std::endl;
 
         while (true) {
             manager.showLoginScreen();
