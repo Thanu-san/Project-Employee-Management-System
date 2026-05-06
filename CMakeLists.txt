@@ -1,28 +1,17 @@
 cmake_minimum_required(VERSION 3.14)
-project(ExcelTableApp)
+project(EmployeeManagementSystem)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include(FetchContent)
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 
-# Fetch xlnt ( library used for working excel )
-FetchContent_Declare(
-  xlnt
-  GIT_REPOSITORY https://github.com/tfussell/xlnt.git
-  GIT_TAG master
+add_executable(EmployeeManagementSystem
+    src/main.cpp
+    src/Employee.cpp
+    src/Manager.cpp
 )
-FetchContent_MakeAvailable(xlnt)
 
-# Fetch tabulate
-FetchContent_Declare(
-  tabulate
-  GIT_REPOSITORY https://github.com/p-ranav/tabulate.git
-  GIT_TAG master
+target_include_directories(EmployeeManagementSystem PRIVATE
+    include
 )
-FetchContent_MakeAvailable(tabulate)
-
-# Add your main.cpp or other source files
-add_executable(ExcelTableApp main.cpp)
-
-# Link libraries
-target_link_libraries(ExcelTableApp PRIVATE xlnt tabulate)
