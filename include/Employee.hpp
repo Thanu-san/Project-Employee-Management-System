@@ -6,10 +6,10 @@ class Employee {
 public:
     std::string id;
     std::string name;
-    int         age;
+    int age;
     std::string gender;
     std::string position;
-    double      salary;
+    double salary;
     std::string phone;
     std::string email;
     std::string username;
