@@ -3,13 +3,19 @@
 #include <stdexcept>
 #include <locale>
 
-int main() {
+int main() {  
     try {
         std::locale::global(std::locale("C"));
     } catch (...) {}
 
     try {
-        Manager manager("data/employees.csv");
+       
+        Manager manager(
+            "data/employees.csv",    
+            "data/reports.csv",     
+            "data/attendance.csv",   
+            "data/backups"           
+        );
 
         while (true) {
             manager.showLoginScreen();

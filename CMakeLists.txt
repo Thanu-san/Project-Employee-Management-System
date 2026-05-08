@@ -10,6 +10,8 @@ add_executable(EmployeeManagementSystem
     src/main.cpp
     src/Employee.cpp
     src/Manager.cpp
+    src/Report.cpp
+    src/Attendance.cpp
 )
 
 target_include_directories(EmployeeManagementSystem PRIVATE
