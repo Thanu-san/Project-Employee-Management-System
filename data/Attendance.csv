@@ -1,0 +1,5 @@
+EmployeeID,EmployeeName,Month,AbsentDays,BaseSalary,Deduction,ActualPay
+EMP001,Alice,2026-05,2,25000.00,1666.67,23333.33
+EMP002,Bob Smith,2026-05,0,300.00,0.00,300.00
+EMP005,test,2026-05,5,454.00,75.67,378.33
+EMP004,thanu,2026-05,4,1500.00,200.00,1300.00
