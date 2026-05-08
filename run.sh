@@ -1,7 +1,7 @@
 # -------------------------------------------------------
-# run.sh
-# Clean build and run script for Employee Management System
-# -------------------------------------------------------
+# If you guys want to run our project, just go to Gitbash and then run like this below : 
+# bash run.sh
+ -------------------------------------------------------
 
 echo "========================================"
 echo "   Employee Management System"
