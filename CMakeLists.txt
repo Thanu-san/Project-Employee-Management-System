@@ -6,26 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 
-include(FetchContent)
-
-FetchContent_Declare(
-    tabulate
-    GIT_REPOSITORY https://github.com/p-ranav/tabulate.git
-    GIT_TAG        master
-)
-FetchContent_MakeAvailable(tabulate)
-
 add_executable(EmployeeManagementSystem
     src/main.cpp
     src/Employee.cpp
     src/Manager.cpp
+    src/Report.cpp
+    src/Attendance.cpp
 )
 
 target_include_directories(EmployeeManagementSystem PRIVATE
     include
-    ${tabulate_SOURCE_DIR}/include
-)
-
-target_link_libraries(EmployeeManagementSystem PRIVATE
-    tabulate::tabulate
 )
