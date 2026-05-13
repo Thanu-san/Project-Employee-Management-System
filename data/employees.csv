@@ -1,5 +1,8 @@
 ID,Name,Age,Gender,Position,Salary,Phone,Email,Username,Password,Role
-EMP001,Alice,30,Female,Software Engineer,25000.00,012-345-679,alice@company.com,alice,alice123,employee
-EMP002,Bob Smith,45,Male,Cleaner,300.00,012-987-643,bob@company.com,bob,bob123,employee
-EMP004,thanu,25,Male,DevOps,1500.00,12 766-578,thanu@gmail.com,thanu,thanu111,employee
-EMP006,Jonny Sin,38,Male,CEO,80000.00,011 111-222,jonny@gmail.com,jonny,jj6767,employee
+EMP001,San Sengthanu,25,Male,DevOps Engineer,5000.00,099 766-578,thanu@gmail.com,thanu,thanu111,employee
+EMP002,Song Chingsean,21,Male,Data Science,7500.00,088114477,chingsean345@gmail.com,chingsean,chingsean22,employee
+EMP003,Soeung Reaksa,20,Female,UX/UI Developer,2500.00,0991122333,soeungreaksa22@gmail.com,reaksa,reaksa33,employee
+EMP004,Vat Laihoun,20,Female,Web Developer,2500.00,077224455,vatlaihoun22@gmail.com,laihoun,laihoun44,employee
+EMP005,Pov Reaksmeypanhavan,20,Male,Mobile App Development,3500.00,0982228833,povreaksmeypanhavan3@gmail.com,panhavan,panhavan55,employee
+EMP006,Sout Sinat,21,Female,IOS Developer,1200.00,0998833994,soutsinat3@gmail.com,sinat,sinat66,employee
+EMP007,Eam Sambath,20,Male,Android Developer,1890.00,098729102,eamsambath4@gmail.com,sambath,sambath77,employee
