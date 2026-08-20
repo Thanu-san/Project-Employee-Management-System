@@ -1,0 +1,13 @@
+ID,Name,Age,Gender,Position,Salary,Phone,Email,Username,Password,Role
+EMP001,San Sengthanu,25,Male,DevOps Engineer,5000.00,099 766-578,thanu@gmail.com,thanu,thanu111,employee
+EMP002,Song Chingsean,21,Male,Data Science,7500.00,088114477,chingsean345@gmail.com,chingsean,chingsean22,employee
+EMP003,Soeung Reaksa,20,Female,UX/UI Developer,2500.00,012 355-345,laihoun@gmail.com,reaksa,reaksa33,employee
+EMP004,Vat Laihoun,20,Female,Web Developer,2500.00,077224455,vatlaihoun22@gmail.com,laihoun,laihoun44,employee
+EMP005,Pov Reaksmeypanhavan,20,Male,Mobile App Development,3500.00,0982228833,povreaksmeypanhavan3@gmail.com,panhavan,panhavan55,employee
+EMP006,Sout Sinat,21,Female,IOS Developer,1200.00,0998833994,soutsinat3@gmail.com,sinat,sinat66,employee
+EMP007,Eam Sambath,20,Male,Android Developer,1890.00,098729102,eamsambath4@gmail.com,sambath,sambath77,employee
+EMP008,Men Senghak,23,Male,Spring Boot,3000.00,012 236-532,hak@gmail.com,hak,hak888,employee
+EMP009,Cheakching Lyheng,32,Male,Cybersecurity,2000.00,023 099-532,heng@gmail.com,heng,heng999,employee
+EMP010,Bean Sovannranuth,33,Male,Web Developer,2400.00,045 453-532,ranuth@gmail.com,ranuth,ranuth10,employee
+EMP011,Sok Pisey,34,Female,UX/UI design,800.00,021 342-453,pisey@gmail.com,pisey,pisey11,employee
+EMP012,Daniel,19,Male,UX/UI,3500.00,099888444,justinn234@gmail.com,justin,justin99,employee

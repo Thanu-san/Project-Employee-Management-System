@@ -538,10 +538,8 @@ void Manager::showLoginScreen() {
 
 void Manager::signUp() {
     clearScreen();
-    printCentered(std::string(CYAN)+"*********************************************"+RESET);
-    printCentered(std::string(CYAN)+"*             [ Please SignUp ]             *"+RESET);
-    printCentered(std::string(CYAN)+"*********************************************"+RESET);
-    std::cout << "\n";
+    printHeader("Sign Up");
+    printFooter();
 
     std::string name,gender,position,phone,email,username,password;
     int age=0; double salary=0.0;
@@ -687,10 +685,10 @@ void Manager::viewEmployee() {
     while(true){
         clearScreen(); 
         printHeader("View Employee");
-        printMenuItem("[1]","View All"); 
-        printMenuItem("[2]","Sort by ID");
-        printMenuItem("[3]","Sort by Salary"); 
-        printMenuItem("[0]","Back"); 
+        printMenuItem("1","View All"); 
+        printMenuItem("2","Sort by ID");
+        printMenuItem("3","Sort by Salary"); 
+        printMenuItem("0","Back"); 
         printFooter();
 
         std::string choiceStr; 
@@ -886,9 +884,9 @@ void Manager::backupManagement() {
     while(true){
         clearScreen(); 
         printHeader("Backup Management");
-        printMenuItem("[1]","View Backups"); 
-        printMenuItem("[2]","Restore Backup"); 
-        printMenuItem("[0]","Back"); 
+        printMenuItem("1","View Backups"); 
+        printMenuItem("2","Restore Backup"); 
+        printMenuItem("0","Back"); 
         printFooter();
 
         int pad=(getTerminalWidth()-38)/2;
@@ -914,9 +912,9 @@ void Manager::searchEmployee() {
     while(true){
         clearScreen(); 
         printHeader("Search Employee");
-        printMenuItem("[1]","Search by ID"); 
-        printMenuItem("[2]","Search by Name"); 
-        printMenuItem("[0]","Back"); 
+        printMenuItem("1","Search by ID"); 
+        printMenuItem("2","Search by Name"); 
+        printMenuItem("0","Back"); 
         printFooter();
 
         int pad=(getTerminalWidth()-38)/2; 
