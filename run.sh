@@ -1,5 +1,5 @@
 # -------------------------------------------------------
-# run.sh
+# bash run.sh
 # Clean build and run script for Employee Management System
 # -------------------------------------------------------
 
